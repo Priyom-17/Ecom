@@ -1,9 +1,10 @@
 import React from 'react'
 
-const Layout = () => {
+const Layout = (porps) => {
   return (
     <div>
       <h1>Layout</h1>
+      {porps.children}
     </div>
   )
 }

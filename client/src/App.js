@@ -1,10 +1,13 @@
 
 import './App.css';
+import Layout from './components/Layout/Layout'
 
 function App() {
   return (
     <>
+    <Layout >
     <h1>EcomAPP</h1>
+    </Layout>
       
     </>
   );
