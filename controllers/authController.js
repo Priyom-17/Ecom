@@ -45,7 +45,7 @@ export const registerController = async(req,res) =>{
         res.status(500).send({
             success:false,
             message:'Error in Registration',
-            error
+            error,
         });
 
     }
@@ -96,9 +96,15 @@ export const loginController = async(req,res) =>{
         res.status(500).send({
             success:false,
             message:'Error in login',
-            error
+            error,
         });
         
     }
+};
+
+//testcontroller
+export const testController = (req,res)=>{
+    res.send("protected Route");
+
 };
 
