@@ -1,6 +1,7 @@
 import { comparePassword, hashPassword } from "../helpers/authHelper.js";
 import userModel from "../models/userModel.js";
 import JWT from "jsonwebtoken";
+import router from './../routes/authRoute.js';
 
 export const registerController = async (req, res) => {
   try {
@@ -28,7 +29,7 @@ export const registerController = async (req, res) => {
 
     const hashedPassword = await hashPassword(password);
 
-    const user = await new userModel({ name, email, phone, address, password: hashedPassword }).save();
+    const user = await new userModel({ name, email, phone, password: hashedPassword }).save();
 
     res.status(201).send({
       success: true,
@@ -70,7 +71,8 @@ export const loginController = async (req, res) => {
       });
     }
     //token
-    const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+    const accestoken = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "20m" });
+    const refreshtoken = await JWT.sign({ _id: user._id }, process.env.JWT_REFRESH_SECRET, { expiresIn: "2m" });
     res.status(200).send({
       success: true,
       message: "Login Successful",
@@ -78,10 +80,21 @@ export const loginController = async (req, res) => {
         name: user.name,
         email: user.email,
         phone: user.phone,
-        address: user.address,
       },
-      token,
+      accestoken,refreshtoken
     });
+
+    router.post("/token", (req,res)=>{
+      const {token}=req.body;
+      if(!token) return res.sendStatus(401);
+
+      JWT.verify(token, JWT_REFRESH_SECRET,(error,user)=>{
+        if(error) return res.sendStatus(403);
+
+        const accesstoken=JWT.sign({_id: user._id},JWT_SECRET,{expiresIn:"20m"});
+        res.json({accesstoken});
+      })
+    })
   } catch (error) {
     console.log(error);
     res.status(500).send({
