@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from "../../context/auth";
 import toast from "react-hot-toast";
 
 const Header = ({ onSearch }) => {
   const [auth, setAuth] = useAuth();
+  const [searchTerm, setSearchTerm] = useState('');
+
   const handleLogout = () => {
     setAuth({
-      ...auth, user: null, token: ''
+      user: null,
+      token: ''
     });
-
     localStorage.removeItem("auth");
     toast.success("Logout Successfully");
-
-  }
-  const [searchTerm, setSearchTerm] = useState('');
+  };
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -25,7 +25,6 @@ const Header = ({ onSearch }) => {
     event.preventDefault();
     onSearch(searchTerm);
   };
-
 
   return (
     <>
@@ -63,20 +62,12 @@ const Header = ({ onSearch }) => {
                     </li>
                   </>) : (<>
                     <li className="nav-item">
-
                       <NavLink onClick={handleLogout} to="/login" className="nav-link">
                         Logout
                       </NavLink>
                     </li>
-
-
-
-
                   </>)
-
-
               }
-
               <li className="nav-item">
                 <form className="d-flex" role="search" onSubmit={handleSearchSubmit}>
                   <input
