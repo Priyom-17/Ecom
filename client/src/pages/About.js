@@ -3,11 +3,16 @@ import Layout from '../components/Layout/Layout'
 
 const About = () => {
   return (
-    <Layout>
-        <h1>About</h1>
+     
+    <Layout title={"About us"} >
+        <div className='row contactus'>
+          <div className='col-md-6'>
+            <img src='\images\about us.jpeg' alt="contactus" style={{width: "100%"}}/>
+          </div>
+        </div>
       
     </Layout>
-  )
-}
+  );
+};
 
 export default About
