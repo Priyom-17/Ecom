@@ -9,6 +9,7 @@ import Register from "./pages/Auth/Register";
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Login from "./pages/Auth/Login";
+import Dashboard from './pages/user/Dashboard';
 
 function App() {
 
@@ -16,12 +17,15 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Homepage />}></Route>
+        <Route path="/dashboard" element={<Dashboard />}></Route>
+        <Route path="/register" element={<Register />}></Route>
+        <Route path="/login" element={<Login />}></Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/contact" element={<Contact />}></Route>
         <Route path="/policy" element={<Policy />}></Route>
         <Route path="*" element={<Pagenotfound />}></Route>
-        <Route path="/register" element={<Register />}></Route>
-        <Route path="/login" element={<Login />}></Route>
+        
+        
 
 
       </Routes>
