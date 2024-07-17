@@ -71,7 +71,7 @@ export const loginController = async (req, res) => {
       });
     }
     //token
-    const accestoken = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "20m" });
+    const accestoken = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "15s" });
     const refreshtoken = await JWT.sign({ _id: user._id }, process.env.JWT_REFRESH_SECRET, { expiresIn: "2m" });
     res.status(200).send({
       success: true,
@@ -91,7 +91,7 @@ export const loginController = async (req, res) => {
       JWT.verify(token, JWT_REFRESH_SECRET,(error,user)=>{
         if(error) return res.sendStatus(403);
 
-        const accesstoken=JWT.sign({_id: user._id},JWT_SECRET,{expiresIn:"20m"});
+        const accesstoken=JWT.sign({_id: user._id},JWT_SECRET,{expiresIn:"15s"});
         res.json({accesstoken});
       })
     })

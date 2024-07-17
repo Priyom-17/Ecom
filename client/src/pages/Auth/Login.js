@@ -1,9 +1,11 @@
+// src/pages/Auth/Login.js
 import React, { useState } from 'react';
 import Layout from '../../components/Layout/Layout';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from 'axios'; // Import axios directly
 import { useAuth } from '../../context/auth';
+import {jwtDecode} from 'jwt-decode'; // Import jwtDecode for token decoding
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -17,53 +19,45 @@ const Login = () => {
       const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/login`, { email, password });
       if (res && res.data.success) {
         toast.success(res.data.message);
+
+        // Decode the access token to get expiration time
+        const decodedToken = jwtDecode(res.data.accestoken);
+        const expirationTime = decodedToken.exp * 1000; // Convert to milliseconds
+
+        // Set auth state with user data and tokens
         setAuth({
-          ...auth,
           user: res.data.user,
-          token: res.data.token,
+          token: { accestoken: res.data.accestoken, refreshtoken: res.data.refreshtoken },
         });
-        localStorage.setItem('auth', JSON.stringify(res.data));
-        navigate('/');
+
+        // Save auth data to local storage
+        localStorage.setItem('auth', JSON.stringify({
+          user: res.data.user,
+          token: { accestoken: res.data.accestoken, refreshtoken: res.data.refreshtoken },
+        }));
+
+        // Redirect to dashboard page after successful login
+        navigate('/dashboard');
+
+        // Schedule redirect to homepage when token expires
+        const tokenExpirationTime = expirationTime - Date.now(); // Time in milliseconds until token expiration
+        setTimeout(() => {
+          setAuth({ user: null, token: { accestoken: '', refreshtoken: '' } });
+          localStorage.removeItem('auth');
+          navigate('/'); // Redirect to homepage
+          toast.error('Token expired. Redirecting to homepage...');
+        }, tokenExpirationTime);
       } else {
-        toast.error(res.data.message);
+        toast.error(res.data.message || 'Login failed'); // Show error message if available, otherwise generic message
       }
     } catch (error) {
-      console.log(error);
-      toast.error('something went wrong');
-    }
-  };
-
-  const API_URL = process.env.REACT_APP_API;
-
-  const getProtectedData = async ({ url, params }) => {
-    try {
-      const response = await axios(`${API_URL}/${url}?${new URLSearchParams(params)}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
-      });
-      return response.data;
-    } catch (error) {
-      if (error.response.status === 403) {
-        const refreshToken = localStorage.getItem("refreshToken");
-        const res = await axios.post(`${API_URL}/token`, { token: refreshToken });
-        localStorage.setItem("accessToken", res.data.accessToken);
-        return getProtectedData({ url, params }); // Retry the original request
-      } else {
-        return { error: "You are not authorized", code: "401" };
-      }
-    }
-  };
-
-  const fetchProtectedData = async () => {
-    try {
-      const data = await getProtectedData({ url: 'protected-endpoint', params: { key: 'value' } });
-      console.log(data);
-    } catch (error) {
-      console.error(error);
+      console.error('Login error:', error); // Log the error to the console for debugging
+      toast.error('Something went wrong'); // Show generic error message to the user
     }
   };
 
   return (
-    <Layout title={'login Now!'}>
+    <Layout title={'Login Now!'}>
       <div className='register'>
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
@@ -75,7 +69,6 @@ const Login = () => {
           </div>
           <button type="submit" className="btn btn-primary">Login</button>
         </form>
-        
       </div>
     </Layout>
   );
