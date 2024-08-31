@@ -1,0 +1,62 @@
+/* Policy.css */
+
+.policy-container {
+    max-width: 800px;
+    /* Set a maximum width for readability */
+    margin: 0 auto;
+    /* Center the container horizontally */
+    padding: 20px;
+    /* Add padding for space around the content */
+    background-color: #f9f9f9;
+    /* Light background for contrast */
+    border-radius: 8px;
+    /* Rounded corners for a modern look */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
+}
+
+.policy-title {
+    font-size: 2.5rem;
+    /* Larger title font */
+    text-align: center;
+    /* Center the title text */
+    margin-bottom: 20px;
+    /* Space below the title */
+    color: #333;
+    /* Darker color for better readability */
+}
+
+.policy-section {
+    margin-bottom: 40px;
+    /* Space between sections */
+}
+
+.policy-section h2 {
+    font-size: 1.75rem;
+    /* Section heading size */
+    color: #555;
+    /* Slightly lighter color for differentiation */
+    margin-bottom: 10px;
+    /* Space below section heading */
+}
+
+.policy-section p {
+    font-size: 1rem;
+    /* Standard font size for body text */
+    color: #666;
+    /* Neutral color for text */
+    line-height: 1.6;
+    /* Comfortable line height for readability */
+}
+
+.policy-section ul {
+    list-style-type: disc;
+    /* Standard bullet points */
+    margin-left: 20px;
+    /* Indent the list */
+}
+
+.policy-section ul li {
+    margin-bottom: 10px;
+    /* Space between list items */
+}
