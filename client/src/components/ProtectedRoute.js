@@ -16,7 +16,7 @@ const ProtectedRoute = ({ children }) => {
       const token = auth?.token?.accestoken;
 
       if (!token || isTokenExpired(token)) {
-        toast.error('Token expired. Redirecting to homepage...'); // Show error message
+        toast.error('Login First!...'); // Show error message
         setTimeout(() => {
           navigate('/'); // Redirect to homepage after 3 seconds
         }, 3000);
