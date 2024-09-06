@@ -10,7 +10,7 @@ const Homepage = ({ addToCart, searchTerm }) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/v1/products/productData');
+        const response = await axios.get(`${process.env.REACT_APP_API}/api/v1/products/productData`);
         setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
