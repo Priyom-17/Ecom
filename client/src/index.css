@@ -7,6 +7,7 @@
 }
 
 .navbar{
+  
   font-family:'Poppins', sans-serif; 
   font-size: 17px;
   line-height: 26px;
@@ -38,6 +39,7 @@
  }
 
  .footer{
+  position: fixed;
   color: white;
   padding: 20px;
   background: #000000;
