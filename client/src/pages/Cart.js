@@ -2,6 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/auth'; // Import useAuth to check if user is logged in
+import { Helmet } from 'react-helmet'; // Import Helmet for SEO
 import './Cart.css';
 
 const Cart = ({ cartItems, onConfirmOrder }) => {
@@ -31,6 +32,10 @@ const Cart = ({ cartItems, onConfirmOrder }) => {
 
   return (
     <div className="cart-container">
+      <Helmet>
+        <title>Your Cart | TechMania</title>
+        <meta name="description" content="Review your cart and confirm your order. Make sure to log in to place an order." />
+      </Helmet>
       <h2>Your Cart</h2>
       {cartItems.length > 0 ? (
         <div className="cart-grid">
