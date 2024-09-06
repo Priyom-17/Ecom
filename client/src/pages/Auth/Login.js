@@ -37,7 +37,7 @@ const Login = () => {
         }));
 
         // Redirect to dashboard page after successful login
-        navigate('/dashboard');
+        navigate('/');
 
         // Schedule redirect to homepage when token expires
         const tokenExpirationTime = expirationTime - Date.now(); // Time in milliseconds until token expiration

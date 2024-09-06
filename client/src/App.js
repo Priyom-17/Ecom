@@ -33,7 +33,7 @@ function App() {
 
   return (
     <>
-      <Header cartItems={cart} />
+      
       <Routes>
         <Route path="/" element={<Homepage addToCart={addToCart} />} />
         <Route

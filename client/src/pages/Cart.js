@@ -33,7 +33,7 @@ const Cart = ({ cartItems, onConfirmOrder }) => {
   return (
     <div className="cart-container">
       <Helmet>
-        <title>Your Cart | TechMania</title>
+        <title>My Cart</title>
         <meta name="description" content="Review your cart and confirm your order. Make sure to log in to place an order." />
       </Helmet>
       <h2>Your Cart</h2>

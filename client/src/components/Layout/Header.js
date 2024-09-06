@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
 import toast from 'react-hot-toast';
 
-const Header = ({ cartItems }) => {
+const Header = ({ onSearch, cartItems = [] }) => {
   const [auth, setAuth] = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -17,8 +17,18 @@ const Header = ({ cartItems }) => {
     toast.success('Logout Successfully');
   };
 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    onSearch(event.target.value); // Pass the search term to the parent component
+  };
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    onSearch(searchTerm);
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary ">
+    <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container-fluid">
         <button
           className="navbar-toggler"
@@ -57,7 +67,7 @@ const Header = ({ cartItems }) => {
             ) : (
               <>
                 <li className="nav-item">
-                  <NavLink to="/orders" className="nav-link"> {/* Link to My Orders */}
+                  <NavLink to="/orders" className="nav-link">
                     My Orders
                   </NavLink>
                 </li>
@@ -72,6 +82,21 @@ const Header = ({ cartItems }) => {
               <NavLink to="/cart" className="nav-link">
                 Cart ({cartItems.length})
               </NavLink>
+            </li>
+            <li className="nav-item">
+              <form className="d-flex" role="search" onSubmit={handleSearchSubmit}>
+                <input
+                  className="form-control me-2"
+                  type="search"
+                  placeholder="Search"
+                  aria-label="Search"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                />
+                <button className="btn btn-outline-success" type="submit">
+                  Search
+                </button>
+              </form>
             </li>
           </ul>
         </div>

@@ -15,7 +15,7 @@ const Orders = ({ orders }) => {
   return (
     <div className="orders-container">
       <Helmet>
-        <title>My Orders - TechMania</title>
+        <title>My Orders</title>
         <meta name="description" content="View and manage your orders on TechMania. Track your purchases and view details of each order." />
         <meta name="keywords" content="orders, order history, TechMania" />
       </Helmet>
