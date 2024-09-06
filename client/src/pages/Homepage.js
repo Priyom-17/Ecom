@@ -1,16 +1,18 @@
 // Homepage.js
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout/Layout';
+import { useAuth } from '../context/auth';
 import axios from 'axios';
 
-const Homepage = ({ addToCart, searchTerm }) => {
+const Homepage = ({ searchTerm, addToCart }) => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [auth, setAuth] = useAuth();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API}/api/v1/products/productData`);
+        const response = await axios.get('http://localhost:8080/api/v1/products/productData');
         setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -33,7 +35,7 @@ const Homepage = ({ addToCart, searchTerm }) => {
   }, [searchTerm, products]);
 
   return (
-    <Layout title="Shop Now">
+    <Layout title={'Shop Now'}>
       <div className="product-list">
         {filteredProducts.map((product, index) => (
           <div key={index} className="product-card">
@@ -41,7 +43,7 @@ const Homepage = ({ addToCart, searchTerm }) => {
             <h2>{product.name}</h2>
             <p>{product.description}</p>
             <p>৳{product.price}</p>
-            <button onClick={() => addToCart(product)}>Add to Cart</button> {/* Ensure this uses addToCart */}
+            <button onClick={() => addToCart(product)}>Add to Cart</button> {/* Add to Cart button */}
           </div>
         ))}
       </div>
