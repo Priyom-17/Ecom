@@ -8,7 +8,8 @@ import 'react-toastify/dist/ReactToastify.css'
 
 const Layout = ({ children, title, description, keywords, author }) => {
   return (
-    <div>
+    <div style={{ position: 'relative', overflow: 'hidden' }}>
+      <div className="blur-bright-bg"></div>
       <Helmet>
         <meta charSet="utf-8" />
 

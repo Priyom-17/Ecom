@@ -1,47 +1,41 @@
 // src/pages/Orders.js
+
 import React from 'react';
-import { useAuth } from '../context/auth';
-import { Helmet } from 'react-helmet';
-import './Orders.css'; // Add custom styling for the orders page
+import Layout from '../components/Layout/Layout';
+import './Orders.css'; // Make sure to create this CSS file
 
 const Orders = ({ orders }) => {
-  const [auth] = useAuth();
-
-  // Check if the user is logged in
-  if (!auth.user) {
-    return <h2>Please log in to view your orders.</h2>;
-  }
-
   return (
-    <div className="orders-container">
-      <Helmet>
-        <title>My Orders</title>
-        <meta name="description" content="View and manage your orders on TechMania. Track your purchases and view details of each order." />
-        <meta name="keywords" content="orders, order history, TechMania" />
-      </Helmet>
-      <h2>My Orders</h2>
-      {orders.length > 0 ? (
-        orders.map((order) => (
-          <div key={order._id} className="order-card">
-            <h3>Order ID: {order._id}</h3>
-            <div className="order-items-grid"> {/* Use a grid layout for the items */}
-              {order.items.map((item, index) => (
-                <div key={index} className="order-item">
-                  <img src={item.image} alt={item.name} className="order-item-image" />
-                  <div className="order-item-details">
-                    <h4>{item.name}</h4>
-                    <p>Price: ৳{item.price}</p>
-                    <p>Quantity: {item.quantity}</p>
-                  </div>
+    <Layout title="My Orders">
+      <div className="orders-container">
+        <h2 className="orders-title">My Orders</h2>
+        {orders.length === 0 ? (
+          <p className="orders-empty">You have no orders.</p>
+        ) : (
+          <div className="orders-list">
+            {orders.map((order) => (
+              <div key={order.id} className="order-card">
+                <h3 className="order-id">Order ID: {order.id}</h3>
+                <p className="order-date">
+                  Ordered on: {new Date(order.id).toLocaleString()}
+                </p>
+                <div className="order-items">
+                  {order.items.map((item, index) => (
+                    <div key={index} className="order-item">
+                      <img src={item.image} alt={item.name} className="order-item-image" />
+                      <div className="order-item-details">
+                        <h4 className="order-item-name">{item.name}</h4>
+                        <p className="order-item-price">৳{item.price}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        ))
-      ) : (
-        <p>No orders yet. Start shopping!</p>
-      )}
-    </div>
+        )}
+      </div>
+    </Layout>
   );
 };
 

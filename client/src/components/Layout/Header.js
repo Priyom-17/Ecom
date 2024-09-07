@@ -1,8 +1,13 @@
 // src/components/Layout/Header.js
 import React, { useState } from 'react';
+import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge, Button } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
 import toast from 'react-hot-toast';
+import SearchIcon from '@mui/icons-material/Search';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const Header = ({ onSearch, cartItems = [] }) => {
   const [auth, setAuth] = useAuth();
@@ -19,89 +24,65 @@ const Header = ({ onSearch, cartItems = [] }) => {
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
-    onSearch(event.target.value); // Pass the search term to the parent component
-  };
-
-  const handleSearchSubmit = (event) => {
-    event.preventDefault();
-    onSearch(searchTerm);
+    onSearch(event.target.value);
   };
 
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
-      <div className="container-fluid">
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarTogglerDemo01"
-          aria-controls="navbarTogglerDemo01"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-        <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <NavLink to="/" className="navbar-brand">
+    <AppBar position="static" sx={{ backgroundColor: '#1976d2' }}>
+      <Toolbar>
+        <IconButton edge="start" color="inherit" aria-label="menu">
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <NavLink to="/" style={{ textDecoration: 'none', color: 'white' }}>
             TechMania
           </NavLink>
-          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <NavLink to="/" className="nav-link">
-                Home
-              </NavLink>
-            </li>
-            {!auth.user ? (
-              <>
-                <li className="nav-item">
-                  <NavLink to="/register" className="nav-link">
-                    Register
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink to="/login" className="nav-link">
-                    Login
-                  </NavLink>
-                </li>
-              </>
-            ) : (
-              <>
-                <li className="nav-item">
-                  <NavLink to="/orders" className="nav-link">
-                    My Orders
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink onClick={handleLogout} to="/login" className="nav-link">
-                    Logout
-                  </NavLink>
-                </li>
-              </>
-            )}
-            <li className="nav-item">
-              <NavLink to="/cart" className="nav-link">
-                Cart ({cartItems.length})
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <form className="d-flex" role="search" onSubmit={handleSearchSubmit}>
-                <input
-                  className="form-control me-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                  value={searchTerm}
-                  onChange={handleSearchChange}
-                />
-                <button className="btn btn-outline-success" type="submit">
-                  Search
-                </button>
-              </form>
-            </li>
-          </ul>
+        </Typography>
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+          <InputBase
+            placeholder="Search…"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            sx={{ color: 'inherit', paddingLeft: 2, paddingRight: 2 }}
+          />
+          <IconButton type="submit" aria-label="search" sx={{ padding: 1 }}>
+            <SearchIcon />
+          </IconButton>
         </div>
-      </div>
-    </nav>
+        <IconButton color="inherit" component={NavLink} to="/cart">
+          <Badge badgeContent={cartItems.length} color="secondary">
+            <ShoppingCartIcon />
+          </Badge>
+        </IconButton>
+        {!auth.user ? (
+          <>
+            <Button color="inherit" component={NavLink} to="/login">
+              Login
+            </Button>
+            <Button color="inherit" component={NavLink} to="/register">
+              Register
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button color="inherit" component={NavLink} to="/orders">
+              My Orders
+            </Button>
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
+          </>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 };
 
