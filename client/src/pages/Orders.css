@@ -1,81 +1,76 @@
-/* src/pages/Orders.css */
-
 .orders-container {
   padding: 20px;
-  background-color: #f4f7f6;
+  background-color: #ffffff;
+  /* lighter background for cleaner look */
   border-radius: 10px;
   margin: 20px auto;
   max-width: 900px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  /* subtle shadow for depth */
 }
 
 .orders-title {
   text-align: center;
   margin-bottom: 20px;
   color: #333;
-  font-size: 24px;
+  font-size: 28px;
+  /* slightly larger title */
+  font-weight: bold;
+  /* emphasis */
 }
 
 .orders-empty {
   text-align: center;
   font-size: 18px;
   color: #888;
-}
-
-.orders-list {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  margin-top: 40px;
+  /* increased margin for spacing */
 }
 
 .order-card {
-  padding: 15px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  /* increased padding for more whitespace */
+  background-color: #f7f7f7;
+  /* lighter background */
+  border: 1px solid #e0e0e0;
+  /* softer border color */
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  /* subtle animation on hover */
 }
 
-.order-id {
-  margin-bottom: 10px;
-  font-size: 18px;
-  color: #555;
-}
-
-.order-date {
-  font-size: 14px;
-  color: #999;
-  margin-bottom: 10px;
-}
-
-.order-items {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.order-item {
-  display: flex;
-  align-items: center;
+.order-card:hover {
+  transform: translateY(-5px);
+  /* lift effect on hover */
 }
 
 .order-item-image {
-  width: 60px;
-  height: 60px;
-  border-radius: 6px;
-  margin-right: 10px;
+  width: 80px;
+  /* slightly larger image */
+  height: 80px;
+  border-radius: 8px;
   object-fit: cover;
 }
 
-.order-item-details {
-  flex-grow: 1;
-}
-
 .order-item-name {
-  font-size: 16px;
+  font-size: 18px;
+  /* slightly larger text */
   color: #333;
+  font-weight: bold;
+  /* emphasis */
 }
 
 .order-item-price {
-  font-size: 14px;
+  font-size: 16px;
+  /* larger price text */
   color: #666;
+}
+
+.orders-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* responsive grid layout */
+  gap: 20px;
+  /* increased gap between cards */
 }

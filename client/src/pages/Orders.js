@@ -2,9 +2,10 @@
 
 import React from 'react';
 import Layout from '../components/Layout/Layout';
-import './Orders.css'; // Make sure to create this CSS file
+import './Orders.css';
 
 const Orders = ({ orders }) => {
+
   return (
     <Layout title="My Orders">
       <div className="orders-container">
