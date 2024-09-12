@@ -1,20 +1,20 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import About from './../../pages/About';
-import Contact from './../../pages/Contact';
-import Policy from './../../pages/Policy';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './Footer.css'; // Import your CSS file
 
 const Footer = () => {
   return (
     <div className='bg-dark text-light p-3'>
-      <h1 className='text-center'>Welcome to the world of Tech!</h1>
+      <h1 className='text-center'>
+        Explore the latest, experience the best!
+      </h1>
       <p className='text-center mt-3'>
-        <Link to="/about"> About |</Link>
-        <Link to="/contact"> Contact |</Link>
-        <Link to="/policy"> Policy |</Link>
+        <Link to="/about" className='footer-link'> About </Link>|
+        <Link to="/contact" className='footer-link'> Contact </Link>|
+        <Link to="/policy" className='footer-link'> Policy </Link>
       </p>
     </div>
-  )
+  );
 }
 
-export default Footer
+export default Footer;

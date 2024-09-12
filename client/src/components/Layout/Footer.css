@@ -1,0 +1,15 @@
+.footer-link {
+    font-size: 18px;
+    /* Adjust the font size as needed */
+    color: #f8f9fa;
+    /* Optional: Change the text color */
+    text-decoration: none;
+    /* Optional: Remove underline */
+    margin: 0 10px;
+    /* Optional: Adjust spacing between links */
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+    /* Optional: Underline on hover */
+}

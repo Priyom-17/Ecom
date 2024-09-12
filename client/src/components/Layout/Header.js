@@ -1,6 +1,6 @@
 // src/components/Layout/Header.js
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge, Button } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, InputBase, Badge, Button, Box } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
 import toast from 'react-hot-toast';
@@ -38,6 +38,22 @@ const Header = ({ onSearch, cartItems = [] }) => {
             TechMania
           </NavLink>
         </Typography>
+
+        {/* Centered "Welcome to TechMania!" quote */}
+        <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              textAlign: 'center',
+              fontSize: '2.5rem',  // Increased font size
+              color: 'pink',       // Changed color to baby pink
+            }}
+          >
+            Welcome to TechMania!
+          </Typography>
+        </Box>
+
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
           <InputBase
             placeholder="Search…"
