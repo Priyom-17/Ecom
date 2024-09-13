@@ -1,5 +1,3 @@
-// src/pages/Homepage.js
-
 import React, { useState } from 'react';
 import { Grid, Card, CardContent, CardMedia, Typography, Button, Modal, Box, Snackbar, Alert } from '@mui/material';
 import Layout from '../components/Layout/Layout';
@@ -57,6 +55,17 @@ const Homepage = ({ addToCart, filteredProducts }) => {
                     variant="contained"
                     color="primary"
                     fullWidth
+                    sx={{
+                      mt: 2,
+                      position: 'relative',
+                      backgroundColor: 'primary.main', // Ensure primary color is applied
+                      '&:hover': {
+                        backgroundColor: 'transparent', // Transparent to show the neon effect
+                        boxShadow: '0 0 10px 4px #39ff14', // Neon green glow
+                        border: '1px solid #39ff14', // Optional neon border
+                      },
+                      border: '1px solid transparent', // Initially transparent border
+                    }}
                     onClick={(e) => {
                       e.stopPropagation(); // Prevent triggering the modal when clicking "Add to Cart"
                       handleAddToCart(product); // Use handleAddToCart to show Snackbar
@@ -98,7 +107,17 @@ const Homepage = ({ addToCart, filteredProducts }) => {
             <Button
               variant="contained"
               color="primary"
-              sx={{ mt: 2 }}
+              sx={{
+                mt: 2,
+                position: 'relative',
+                backgroundColor: 'primary.main', // Ensure primary color is applied
+                '&:hover': {
+                  backgroundColor: 'transparent', // Transparent to show the neon effect
+                  boxShadow: '0 0 10px 4px #39ff14', // Neon green glow
+                  border: '1px solid #39ff14', // Optional neon border
+                },
+                border: '1px solid transparent', // Initially transparent border
+              }}
               onClick={() => {
                 handleAddToCart(selectedProduct); // Use handleAddToCart to show Snackbar
                 handleClose();

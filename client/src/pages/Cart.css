@@ -1,10 +1,14 @@
 /* src/pages/Cart.css */
+body {
+  background-color: #041321;
+  /* Set the background to black */
+}
 
 .cart-container {
   padding: 20px;
   max-width: 1000px;
   margin: 20px auto;
-  background-color: #f4f7f6;
+  background-color: #cdd5dd;
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
@@ -12,8 +16,8 @@
 h2 {
   text-align: center;
   margin-bottom: 20px;
-  color: #333;
-  font-size: 26px;
+  color: #7a0d3e;
+  font-size: 30px;
   font-weight: bold;
 }
 
@@ -29,7 +33,7 @@ h2 {
   flex-direction: column;
   align-items: center;
   padding: 15px;
-  background-color: #fff;
+  background-color: #ffffff;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -66,8 +70,8 @@ h2 {
 .cart-total {
   text-align: center;
   padding: 15px;
-  background-color: #e9ecef;
-  border: 1px solid #ddd;
+  background-color: #f4f6f9;
+  border: 1px solid #041321;
   border-radius: 8px;
   margin-top: 10px;
 }
@@ -90,5 +94,16 @@ h2 {
 }
 
 .confirm-order-button:hover {
-  background-color: #218838;
+  background-color: #09210f;
+  box-shadow: 0 0 10px 2px neon green, 0 0 20px 5px neon green, 0 0 30px 10px neon green;
+}
+
+.empty-cart-message {
+  color: rgb(36, 5, 5);
+  font-size: 30px;
+
+  text-align: left;
+
+  margin-top: 30px;
+
 }

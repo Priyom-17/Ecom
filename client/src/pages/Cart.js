@@ -50,7 +50,7 @@ const Cart = ({ cartItems, onConfirmOrder }) => {
           ))}
         </div>
       ) : (
-        <p>Your cart is empty.</p>
+        <p className="empty-cart-message">Your cart is empty.</p>
       )}
       {cartItems.length > 0 && (
         <div className="cart-total">

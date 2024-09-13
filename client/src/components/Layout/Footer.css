@@ -5,11 +5,10 @@
     /* Optional: Change the text color */
     text-decoration: none;
     /* Optional: Remove underline */
-    margin: 0 10px;
-    /* Optional: Adjust spacing between links */
 }
 
-.footer-link:hover {
-    text-decoration: underline;
-    /* Optional: Underline on hover */
+.footer-link.login-btn,
+.footer-link.logout-btn,
+.footer-link.register-btn {
+    display: none;
 }
