@@ -1,30 +1,37 @@
+// src/components/Homepage.js
 import React, { useState } from 'react';
 import { Grid, Card, CardContent, CardMedia, Typography, Button, Modal, Box, Snackbar, Alert } from '@mui/material';
 import Layout from '../components/Layout/Layout';
+import { useCart } from '../context/cartcontext';
 
-const Homepage = ({ addToCart, filteredProducts }) => {
+const Homepage = ({ filteredProducts }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const { cartItems, addToCart, removeFromCart } = useCart();
 
-  // Handle opening the modal with product details
   const handleOpen = (product) => {
     setSelectedProduct(product);
   };
 
-  // Handle closing the modal
   const handleClose = () => {
     setSelectedProduct(null);
   };
 
-  // Handle adding product to cart and showing the Snackbar
   const handleAddToCart = (product) => {
     addToCart(product);
-    setSnackbarOpen(true); // Show Snackbar
+    setSnackbarOpen(true);
   };
 
-  // Handle closing the Snackbar
+  const handleRemoveFromCart = (productId) => {
+    removeFromCart(productId);
+  };
+
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
+  };
+
+  const isInCart = (productId) => {
+    return cartItems.some((item) => item._id === productId);
   };
 
   return (
@@ -36,42 +43,46 @@ const Homepage = ({ addToCart, filteredProducts }) => {
               <Card sx={{ maxWidth: 345, cursor: 'pointer', bgcolor: 'grey.900', color: 'white' }} onClick={() => handleOpen(product)}>
                 <CardMedia
                   component="img"
-                  height="200" // Adjust height for better image visibility
+                  height="200"
                   image={product.image}
                   alt={product.name}
-                  sx={{ objectFit: 'contain' }} // Ensure the entire image is visible
+                  sx={{ objectFit: 'contain' }}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div" sx={{ color: 'white' }}>
                     {product.name}
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'grey.400' }}>
-                    {product.description.substring(0, 50)}... {/* Shorten for preview */}
+                    {product.description.substring(0, 50)}...
                   </Typography>
                   <Typography variant="h6" sx={{ color: 'white' }}>
                     ৳{product.price}
                   </Typography>
                   <Button
                     variant="contained"
-                    color="primary"
+                    color={isInCart(product._id) ? 'error' : 'primary'}
                     fullWidth
                     sx={{
                       mt: 2,
                       position: 'relative',
-                      backgroundColor: 'primary.main', // Ensure primary color is applied
+                      backgroundColor: isInCart(product._id) ? '#ff4d4d' : 'primary.main',
                       '&:hover': {
-                        backgroundColor: 'transparent', // Transparent to show the neon effect
-                        boxShadow: '0 0 10px 4px #39ff14', // Neon green glow
-                        border: '1px solid #39ff14', // Optional neon border
+                        backgroundColor: isInCart(product._id) ? '#ff1a1a' : 'transparent',
+                        boxShadow: '0 0 10px 4px #39ff14',
+                        border: '1px solid #39ff14',
                       },
-                      border: '1px solid transparent', // Initially transparent border
+                      border: '1px solid transparent',
                     }}
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent triggering the modal when clicking "Add to Cart"
-                      handleAddToCart(product); // Use handleAddToCart to show Snackbar
+                      e.stopPropagation();
+                      if (isInCart(product._id)) {
+                        handleRemoveFromCart(product._id);
+                      } else {
+                        handleAddToCart(product);
+                      }
                     }}
                   >
-                    Add to Cart
+                    {isInCart(product._id) ? 'Remove from Cart' : 'Add to Cart'}
                   </Button>
                 </CardContent>
               </Card>
@@ -80,7 +91,6 @@ const Homepage = ({ addToCart, filteredProducts }) => {
         </Grid>
       </Box>
 
-      {/* Modal for showing full product details */}
       {selectedProduct && (
         <Modal open={true} onClose={handleClose}>
           <Box
@@ -106,35 +116,38 @@ const Homepage = ({ addToCart, filteredProducts }) => {
             </Typography>
             <Button
               variant="contained"
-              color="primary"
+              color={isInCart(selectedProduct._id) ? 'error' : 'primary'}
               sx={{
                 mt: 2,
                 position: 'relative',
-                backgroundColor: 'primary.main', // Ensure primary color is applied
+                backgroundColor: isInCart(selectedProduct._id) ? '#ff4d4d' : 'primary.main',
                 '&:hover': {
-                  backgroundColor: 'transparent', // Transparent to show the neon effect
-                  boxShadow: '0 0 10px 4px #39ff14', // Neon green glow
-                  border: '1px solid #39ff14', // Optional neon border
+                  backgroundColor: isInCart(selectedProduct._id) ? '#ff1a1a' : 'transparent',
+                  boxShadow: '0 0 10px 4px #39ff14',
+                  border: '1px solid #39ff14',
                 },
-                border: '1px solid transparent', // Initially transparent border
+                border: '1px solid transparent',
               }}
               onClick={() => {
-                handleAddToCart(selectedProduct); // Use handleAddToCart to show Snackbar
+                if (isInCart(selectedProduct._id)) {
+                  handleRemoveFromCart(selectedProduct._id);
+                } else {
+                  handleAddToCart(selectedProduct);
+                }
                 handleClose();
               }}
             >
-              Add to Cart
+              {isInCart(selectedProduct._id) ? 'Remove from Cart' : 'Add to Cart'}
             </Button>
           </Box>
         </Modal>
       )}
 
-      {/* Snackbar for "Product added to cart" notification */}
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={3000} // Auto hide after 3 seconds
+        autoHideDuration={3000}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // Show from the top
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
           Product added to cart!
