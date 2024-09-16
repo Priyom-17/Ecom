@@ -3,7 +3,7 @@
 
 .register-page {
     background: 
-                url('E:\Ecom\client\src\pages\Auth\images\backgrounds5.jpg') no-repeat center center; 
+                url('E:\Ecom\client\src\pages\Auth\images\backgrounds5.png') no-repeat center center; 
                 background-size: cover;
                 height: 100vh;
                 display: flex;
@@ -48,7 +48,7 @@
 .register-title {
     text-align: center;
     font-size: 30px; /* Eye appealing size */
-    color: #f4f6ff;
+    color: #244bf9;
     margin-bottom: 30px;
     font-weight: bold;
     letter-spacing: 1.5px;
