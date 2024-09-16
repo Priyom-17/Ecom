@@ -5,8 +5,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // Import axios directly
 import { useAuth } from '../../context/auth';
-import { jwtDecode } from 'jwt-decode'; // Import jwtDecode for token decoding
-import './Login.css'; // Add a CSS file for styling
+import {jwtDecode} from 'jwt-decode'; // Import jwtDecode for token decoding
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -59,19 +58,17 @@ const Login = () => {
 
   return (
     <Layout title={'Login Now!'}>
-      <div className="login-container">
-        <div className="login-box">
-          <h1 className="login-title">Login</h1>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" id="exampleInputEmail1" placeholder="Enter Your Email" required />
-            </div>
-            <div className="mb-3">
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" id="exampleInputPassword1" placeholder="Enter Password" required />
-            </div>
-            <button type="submit" className="btn btn-primary login-button">Login</button>
-          </form>
-        </div>
+      <div className='register'>
+        <h1>Login</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" id="exampleInputEmail1" placeholder='Enter Your Email' required />
+          </div>
+          <div className="mb-3">
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" id="exampleInputPassword1" placeholder='Enter Password' required />
+          </div>
+          <button type="submit" className="btn btn-primary">Login</button>
+        </form>
       </div>
     </Layout>
   );
