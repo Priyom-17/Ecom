@@ -14,6 +14,7 @@ const Header = ({ onSearch }) => {
   const { cartItems } = useCart(); // Use cartItems from cart context
   const [searchTerm, setSearchTerm] = useState('');
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
+  const [profileAnchorEl, setProfileAnchorEl] = useState(null);
 
   const handleLogout = () => {
     setAuth({
@@ -38,6 +39,14 @@ const Header = ({ onSearch }) => {
     setMenuAnchorEl(null);
   };
 
+  const handleProfileMenuOpen = (event) => {
+    setProfileAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileMenuClose = () => {
+    setProfileAnchorEl(null);
+  };
+
   return (
     <AppBar position="static" sx={{ backgroundColor: '#041321' }}>
       <Toolbar>
@@ -45,7 +54,33 @@ const Header = ({ onSearch }) => {
           <MenuIcon />
         </IconButton>
 
-        {/* Menu code here... */}
+        {/* Menu that only shows the user's name and email */}
+        <Menu
+          anchorEl={menuAnchorEl}
+          open={Boolean(menuAnchorEl)}
+          onClose={handleMenuClose}
+        >
+          {auth?.user ? (
+            <>
+              <MenuItem disabled>
+                <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: 'black' }}>
+                  {auth.user.name}
+                </Typography>
+              </MenuItem>
+              <MenuItem disabled>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'black' }}>
+                  {auth.user.email}
+                </Typography>
+              </MenuItem>
+            </>
+          ) : (
+            <MenuItem disabled>
+              <Typography variant="subtitle1" color="textPrimary">
+                No user logged in
+              </Typography>
+            </MenuItem>
+          )}
+        </Menu>
 
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           <NavLink to="/" style={{ textDecoration: 'none', color: 'white' }}>
@@ -54,7 +89,6 @@ const Header = ({ onSearch }) => {
         </Typography>
 
         {/* Centered "Welcome to TechMania!" quote */}
-
         <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
           <Typography variant="h6" component="div" sx={{ textAlign: 'center', fontSize: '2.5rem', color: 'pink' }}>
             Welcome to TechMania!
@@ -93,12 +127,34 @@ const Header = ({ onSearch }) => {
             <Button color="inherit" component={NavLink} to="/orders">
               My Orders
             </Button>
-            <IconButton edge="end" aria-label="account of current user" aria-haspopup="true" color="inherit">
+            <IconButton edge="end" aria-label="account of current user" aria-haspopup="true" color="inherit" onClick={handleProfileMenuOpen}>
               <AccountCircle />
             </IconButton>
             <Button color="inherit" onClick={handleLogout}>
               Logout
             </Button>
+
+            {/* Profile dropdown menu */}
+            <Menu
+              anchorEl={profileAnchorEl}
+              open={Boolean(profileAnchorEl)}
+              onClose={handleProfileMenuClose}
+            >
+              <MenuItem disabled>
+                <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: 'black', fontSize: '1rem' }}>
+                  {auth.user.name}
+                </Typography>
+              </MenuItem>
+              <MenuItem disabled>
+                <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'black', fontSize: '1rem' }}>
+                  {auth.user.email}
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleProfileMenuClose} component={NavLink} to="/profile">
+                Profile
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
           </>
         )}
       </Toolbar>
