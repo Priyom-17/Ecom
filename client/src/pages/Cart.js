@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/auth';
 import { useCart } from '../context/cartcontext';
 import { Helmet } from 'react-helmet';
-import axios from 'axios';
+import axios from 'axios'; // Import axios
 import './Cart.css';
 
 const Cart = ({ onConfirmOrder }) => {
@@ -26,7 +26,7 @@ const Cart = ({ onConfirmOrder }) => {
 
     const order = {
       id: Date.now(),
-      date: new Date().toLocaleString(),
+      date: new Date(),
       total: totalPrice,
       items: cartItems.map(item => ({
         ...item,
@@ -34,19 +34,16 @@ const Cart = ({ onConfirmOrder }) => {
       })),
     };
 
-    const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];
-    localStorage.setItem('orders', JSON.stringify([...storedOrders, order]));
-
     try {
       await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/confirm-order`, {
-        orderId: order.id,
-        date: order.date,
-        items: order.items,
-        totalPrice: order.total,
-        customerName: auth.user.name,
+        order,
         customerEmail: auth.user.email,
-        customerNumber: auth.user.number,
+        customerName: auth.user.name,
+        customerPhone: auth.user.phone,
       });
+
+      const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];
+      localStorage.setItem('orders', JSON.stringify([...storedOrders, order]));
 
       clearCart();
       alert('Order confirmed! You can view your order in the "My Orders" section.');

@@ -5,7 +5,10 @@ import {
     testController,
 } from "../controllers/authController.js";
 import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
-import sendEmail from "../config/sendmail.js";
+import {
+    sendOrderConfirmationEmail,
+    sendOrderNotificationEmail,
+} from "../config/sendmail.js";
 const router = express.Router();
 
 router.post("/register", registerController);
@@ -13,47 +16,20 @@ router.post("/register", registerController);
 router.post("/login", loginController);
 
 router.get("/test", requireSignIn, isAdmin, testController);
-router.post("/confirm-order", async (req, res) => {
-    const {
-        orderId,
-        date,
-        items,
-        totalPrice,
+
+router.post("/confirm-order", (req, res) => {
+    const { order, customerEmail, customerName, customerPhone } = req.body;
+
+    sendOrderConfirmationEmail(order, customerEmail);
+
+    sendOrderNotificationEmail({
+        ...order,
         customerName,
         customerEmail,
-        customerNumber,
-    } = req.body;
+        customerPhone,
+    });
 
-    // Prepare the email content
-    const subject = `Order Confirmation - Order ID: ${orderId}`;
-    const text = `
-    Name: ${customerName},
-    Order ID: ${orderId}
-    Date: ${date}
-    Total Price: ৳${totalPrice.toFixed(2)}
-    Items:
-    ${items
-            .map(
-                (item) =>
-                    `- ${item.name} (Quantity: ${item.quantity}, Price: ৳${item.price})`
-            )
-            .join("\n")}
-    Mail: ${process.env.EMAIL_USER}.
-    `;
-
-    try {
-        // Send the email
-        await sendEmail(customerEmail, subject, text);
-        res.status(200).json({
-            success: true,
-            message: "Order confirmed and email sent!",
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Failed to send email",
-        });
-    }
+    res.status(200).json({ message: "Order confirmed and emails sent!" });
 });
 
 export default router;
