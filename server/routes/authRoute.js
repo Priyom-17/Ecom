@@ -45,16 +45,23 @@ router.post("/confirm-order", requireSignIn, async (req, res) => {
             total: order.total,
         }).save();
 
+        // Fetch the newly created order with populated product details
+        const populatedOrder = await Order.findById(newOrder._id)
+            .populate({
+                path: 'items.productId',
+                select: 'name image' // Ensure to select fields you need
+            });
+
         // Send confirmation email
-        sendOrderConfirmationEmail(newOrder, customerEmail);
-        sendOrderNotificationEmail({
-            ...newOrder,
+        await sendOrderConfirmationEmail(populatedOrder, customerEmail);
+        await sendOrderNotificationEmail({
+            ...populatedOrder._doc, // Spread the populated order details
             customerName,
             customerEmail,
             customerPhone,
         });
 
-        res.status(200).json({ message: "Order confirmed and emails sent!", order: newOrder });
+        res.status(200).json({ message: "Order confirmed and emails sent!", order: populatedOrder });
     } catch (error) {
         console.error('Error confirming order:', error); // Log the error details
         res.status(500).json({ success: false, message: "Error confirming order." });
