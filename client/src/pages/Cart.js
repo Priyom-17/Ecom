@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/auth';
 import { useCart } from '../context/cartcontext';
 import { Helmet } from 'react-helmet';
-import axios from 'axios'; // Import axios
+import axios from 'axios';
 import './Cart.css';
 
-const Cart = ({ onConfirmOrder }) => {
+const Cart = () => {
   const [auth] = useAuth();
   const { cartItems, removeFromCart, clearCart, increaseQuantity, decreaseQuantity } = useCart();
   const navigate = useNavigate();
@@ -19,40 +19,40 @@ const Cart = ({ onConfirmOrder }) => {
 
   const handleConfirmOrder = async () => {
     if (!auth.user) {
-      alert('You need to be logged in to confirm the order.');
-      navigate('/login');
-      return;
+        alert('You need to be logged in to confirm the order.');
+        navigate('/login');
+        return;
     }
 
     const order = {
-      id: Date.now(),
-      date: new Date(),
-      total: totalPrice,
-      items: cartItems.map(item => ({
-        ...item,
-        price: typeof item.price === 'string' ? parseFloat(item.price.replace(/[^0-9.-]+/g, '')) : item.price,
-      })),
+        items: cartItems.map(item => ({
+            productId: item._id,
+            quantity: item.quantity,
+            price: item.price,
+        })),
+        total: totalPrice,
     };
 
     try {
-      await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/confirm-order`, {
-        order,
-        customerEmail: auth.user.email,
-        customerName: auth.user.name,
-        customerPhone: auth.user.phone,
-      });
+        await axios.post(`${process.env.REACT_APP_API}/api/v1/auth/confirm-order`, {
+            order,
+            customerEmail: auth.user.email,
+            customerName: auth.user.name,
+            customerPhone: auth.user.phone,
+        }, {
+            headers: {
+                'Authorization': `Bearer ${auth.token.accestoken}`, // Include the access token here
+            },
+        });
 
-      const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];
-      localStorage.setItem('orders', JSON.stringify([...storedOrders, order]));
-
-      clearCart();
-      alert('Order confirmed! You can view your order in the "My Orders" section.');
-      navigate('/orders');
+        clearCart();
+        alert('Order confirmed! You can view your order in the "My Orders" section.');
+        navigate('/orders');
     } catch (error) {
-      console.error('Error confirming order:', error);
-      alert('Failed to confirm order. Please try again.');
+        console.error('Error confirming order:', error);
+        alert('Failed to confirm order. Please try again.');
     }
-  };
+};
 
   return (
     <div className="cart-container">

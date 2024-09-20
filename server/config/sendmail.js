@@ -17,63 +17,69 @@ export const sendOrderConfirmationEmail = (order, customerEmail) => {
         to: customerEmail,
         subject: "Order Confirmation",
         text: `
-    Dear Customer,
-    Your order has been received. Thank you for your purchase!
+Dear Customer,
+Your order has been received. Thank you for your purchase!
 
-    Order ID: ${order.id}
-    Order Date: ${new Date(order.date).toLocaleString()}
-    Total Price: ৳${order.total.toFixed(2)}
-    Items:
-    ${order.items
-                .map(
-                    (item) =>
-                        `- ${item.name} (Quantity: ${item.quantity}, Price: ৳${item.price})`
-                )
-                .join("\n")}
+Order ID: ${order.id || 'N/A'}
+Order Date: ${new Date(order.date || Date.now()).toLocaleString()}
+Total Price: ৳${(order.total || 0).toFixed(2)}
+Items:
+${order.items
+            .map(
+                (item) =>
+                    `- ${item.name || 'Unknown Item'} (Quantity: ${item.quantity}, Price: ৳${item.price})`
+            )
+            .join("\n")}
 
-    Best regards,
-    TechMania.
-    `,
+Best regards,
+TechMania.
+`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            console.log("Error sending email:", error);
+            console.log("Error sending confirmation email:", error);
         } else {
-            console.log("Email sent:", info.response);
+            console.log("Confirmation email sent:", info.response);
         }
     });
 };
 
 export const sendOrderNotificationEmail = (order) => {
+    // Access _doc to get the actual order details
+    const orderDetails = order._doc || order;
+
+    // Log the order object to debug
+    console.log('Order details for notification email:', orderDetails);
+
     const mailOptions = {
         from: process.env.EMAIL_USER,
         to: process.env.ADMIN_EMAIL,
         subject: "New Order Notification",
         text: `
-    A new order has been placed.
+A new order has been placed.
 
-    Order ID: ${order.id}
-    Order Date: ${new Date(order.date).toLocaleString()}
-    Customer Name: ${order.customerName}
-    Customer Email: ${order.customerEmail}
-    Customer Phone: ${order.customerPhone}
-    Total Price: ৳${order.total.toFixed(2)}
-    Items:
-    ${order.items
-                .map(
-                    (item) =>
-                        `- ${item.name} (Quantity: ${item.quantity}, Price: ৳${item.price})`
-                )
-                .join("\n")}
-    `,
+Order ID: ${orderDetails._id || 'N/A'}
+Order Date: ${new Date(orderDetails.createdAt || Date.now()).toLocaleString()}
+Customer Name: ${order.customerName || 'N/A'}
+Customer Email: ${order.customerEmail || 'N/A'}
+Customer Phone: ${order.customerPhone || 'N/A'}
+Total Price: ৳${(orderDetails.total || 0).toFixed(2)}
+Items:
+${orderDetails.items
+            .map(
+                (item) =>
+                    `- ${item.name || 'Unknown Item'} (Quantity: ${item.quantity}, Price: ৳${item.price})`
+            )
+            .join("\n")}
+`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-            console.log("Error sending email:", error);
+            console.log("Error sending notification email:", error);
         } else {
-            console.log("Email sent:", info.response);
+            console.log("Notification email sent:", info.response);
         }
     });
 };
