@@ -8,6 +8,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
+import Dashboard from './../../pages/user/Dashboard';
 
 const Header = ({ onSearch }) => {
   const [auth, setAuth] = useAuth();
@@ -62,16 +63,12 @@ const Header = ({ onSearch }) => {
         >
           {auth?.user ? (
             <>
-              <MenuItem disabled>
+              <MenuItem component={NavLink} to="/dashboard" onClick={handleMenuClose}>
                 <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: 'black' }}>
-                  {auth.user.name}
+                  Dashboard
                 </Typography>
               </MenuItem>
-              <MenuItem disabled>
-                <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'black' }}>
-                  {auth.user.email}
-                </Typography>
-              </MenuItem>
+             
             </>
           ) : (
             <MenuItem disabled>

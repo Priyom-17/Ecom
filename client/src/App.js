@@ -77,11 +77,7 @@ function App() {
           element={<Homepage addToCart={addToCart} filteredProducts={filteredProducts} />} /> {/* Pass filtered products */}
         <Route
           path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
+          element={<Dashboard /> }
         />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

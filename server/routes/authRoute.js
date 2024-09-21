@@ -32,6 +32,43 @@ router.get('/orders', requireSignIn, async (req, res) => {
     }
 });
 
+router.get('/product-stats', async (req, res) => {
+    try {
+        // Aggregate orders to calculate total quantities for each product
+        const productStats = await Order.aggregate([
+            { $unwind: "$items" }, // Flatten the array of items
+            {
+                $group: {
+                    _id: "$items.productId", // Group by productId
+                    totalQuantity: { $sum: "$items.quantity" } // Sum the quantities
+                }
+            },
+            {
+                $lookup: {
+                    from: "products", // Assuming your product collection is named "products"
+                    localField: "_id", // Use the productId from the group
+                    foreignField: "_id", // Match it with the product's _id
+                    as: "productInfo" // Store product info
+                }
+            },
+            { $unwind: "$productInfo" }, // Flatten product info
+            {
+                $project: {
+                    _id: 1,
+                    totalQuantity: 1,
+                    productName: "$productInfo.name" // Project product name and total quantity
+                }
+            }
+        ]);
+
+        res.status(200).json(productStats);
+    } catch (error) {
+        console.error("Error fetching product stats:", error);
+        res.status(500).json({ success: false, message: "Error fetching product stats" });
+    }
+});
+
+
 router.post("/confirm-order", requireSignIn, async (req, res) => {
     const { order, customerEmail, customerName, customerPhone } = req.body;
 
